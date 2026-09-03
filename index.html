@@ -1,1 +1,105 @@
- <!DOCTYPE html> <html lang="en"> <head>  <link rel="stylesheet" href="style.css">      <meta charset="UTF-8">     <meta name="viewport" content="width=device-width, initial-scale=1"> <title>QR Masked Call</title> </head> <body>     <header>         <h1>QR Masked Call</h1>         <p>Scan the QR to contact the owner without seeing their number. </p>     </header <main>         <section aria-label="scan section">             <h2>Scan QR</h2> <p>Use your phone camera to scan the sticker. </p> </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="QR Masked Call - Contact a vehicle owner without revealing their phone number.">
+  <title>QR Masked Call</title>
+  <!-- Final CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>QR Masked Call</h1>
+    <p>Contact a vehicle owner without revealing their phone number</p>
+  </header>
+  <main class="container">
+    <!-- QR Scan Section -->
+    <section class="card">
+      <h2>Scan QR Code</h2>
+      <p>
+        Scan the QR code placed on the vehicle to contact the owner.
+      </p>
+      <br>
+      <button type="button" onclick="startScanner()">
+        Scan QR Code
+      </button>
+      <div id="scanner" style="margin-top: 20px;"></div>
+    </section>
+    <br>
+    <!-- Contact Options -->
+    <section class="card">
+      <h2>Contact Vehicle Owner</h2>
+      <p>
+        Choose an option below to contact the vehicle owner.
+      </p>
+      <br>
+      <button type="button" onclick="makeCall()">
+        📞 Call Owner
+      </button>
+      <br><br>
+      <button type="button" onclick="openWhatsApp()">
+        💬 WhatsApp
+      </button>
+      <br><br>
+      <button type="button" onclick="sendEmergency()">
+        🚨 Emergency Message
+      </button>
+    </section>
+    <br>
+    <!-- FAQ Section -->
+    <section class="card">
+      <h2>Frequently Asked Questions</h2>
+      <br>
+      <h3>How does QR Masked Call work?</h3>
+      <p>
+        Scan the QR code on the vehicle and choose the contact option.
+        The owner's personal phone number is not displayed.
+      </p>
+      <br>
+      <h3>Can I see the owner's phone number?</h3>
+      <p>
+        No. The system is designed to keep the owner's phone number private.
+      </p>
+      <br>
+      <h3>Do I need to install an app?</h3>
+      <p>
+        No. The website can be opened directly from your phone or tablet.
+      </p>
+    </section>
+    <br>
+    <!-- Customer Support -->
+    <section class="card">
+      <h2>Customer Support</h2>
+      <br>
+      <p>
+        Need help? Contact our support team through WhatsApp.
+      </p>
+      <br>
+      <button type="button" onclick="contactSupport()">
+        Contact Support
+      </button>
+    </section>
+  </main>
+  <script>
+    function startScanner() {
+      const scanner = document.getElementById("scanner");
+      scanner.innerHTML =
+        "<p>QR scanner will be connected here.</p>" +
+        "<p>Please allow camera access when the scanner is activated.</p>";
+    }
+    function makeCall() {
+      alert("Masked calling system will be connected here.");
+    }
+    function openWhatsApp() {
+      alert("WhatsApp integration will be connected here.");
+    }
+    function sendEmergency() {
+      alert("Emergency message system will be connected here.");
+    }
+    function contactSupport() {
+      alert("Customer support WhatsApp will be connected here.");
+    }
+  </script>
+</body>
+</html>

@@ -3,103 +3,854 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="QR Masked Call - Contact a vehicle owner without revealing their phone number.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="description" content="QR Masked Call - Contact a vehicle owner safely without revealing their phone number.">
   <title>QR Masked Call</title>
-  <!-- Final CSS -->
+
+  <!-- Your existing finalized stylesheet -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- QR decoder -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 </head>
+
 <body>
+
+  <!-- ================= HEADER ================= -->
   <header>
-    <h1>QR Masked Call</h1>
-    <p>Contact a vehicle owner without revealing their phone number</p>
+    <div class="container">
+      <h1>QR Masked Call</h1>
+      <p>Contact a vehicle owner safely and privately</p>
+    </div>
   </header>
+
+
   <main class="container">
-    <!-- QR Scan Section -->
-    <section class="card">
+
+    <!-- ================= SCAN QR ================= -->
+    <section id="scan-section" class="section">
       <h2>Scan QR Code</h2>
-      <p>
-        Scan the QR code placed on the vehicle to contact the owner.
-      </p>
-      <br>
-      <button type="button" onclick="startScanner()">
+      <p>Scan the QR code placed on the vehicle to contact the owner.</p>
+
+      <button id="scanBtn" type="button">
         Scan QR Code
       </button>
-      <div id="scanner" style="margin-top: 20px;"></div>
+
+      <!-- Scanner -->
+      <div id="scannerContainer" hidden>
+
+        <div class="scanner-box">
+          <video
+            id="camera"
+            autoplay
+            playsinline
+            muted>
+          </video>
+
+          <canvas id="qrCanvas" hidden></canvas>
+
+          <div class="scanner-overlay">
+            <div class="scanner-frame"></div>
+          </div>
+        </div>
+
+        <p id="scannerStatus">
+          Requesting camera permission...
+        </p>
+
+        <button id="stopScanBtn" type="button">
+          Stop Scanner
+        </button>
+
+      </div>
+
+      <!-- Permission / error message -->
+      <div id="scanMessage" role="status" aria-live="polite"></div>
+
+      <!-- Result -->
+      <div id="qrResult" hidden>
+
+        <h3>QR Code Detected</h3>
+
+        <p>
+          Vehicle QR code successfully scanned.
+        </p>
+
+        <div id="qrData"></div>
+
+        <div class="contact-actions">
+
+          <button id="callOwnerBtn" type="button">
+            Call Vehicle Owner
+          </button>
+
+          <button id="whatsappOwnerBtn" type="button">
+            WhatsApp Owner
+          </button>
+
+          <button id="emergencyBtn" type="button">
+            Send Emergency Message
+          </button>
+
+        </div>
+
+        <button id="scanAgainBtn" type="button">
+          Scan Again
+        </button>
+
+      </div>
     </section>
-    <br>
-    <!-- Contact Options -->
-    <section class="card">
+
+
+    <!-- ================= CONTACT VEHICLE OWNER ================= -->
+    <section id="contact-owner" class="section">
+
       <h2>Contact Vehicle Owner</h2>
+
       <p>
-        Choose an option below to contact the vehicle owner.
+        Need to contact the owner of a vehicle?
+        Scan the QR code placed on the vehicle.
       </p>
-      <br>
-      <button type="button" onclick="makeCall()">
-        📞 Call Owner
+
+      <div class="contact-options">
+
+        <div class="contact-card">
+          <h3>Masked Call</h3>
+          <p>
+            Call the vehicle owner without exposing their personal phone number.
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <h3>WhatsApp</h3>
+          <p>
+            Contact the vehicle owner through WhatsApp when available.
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <h3>Emergency</h3>
+          <p>
+            Send an important emergency message to the vehicle owner.
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        onclick="document.getElementById('scanBtn').click()">
+        Scan Vehicle QR
       </button>
-      <br><br>
-      <button type="button" onclick="openWhatsApp()">
-        💬 WhatsApp
-      </button>
-      <br><br>
-      <button type="button" onclick="sendEmergency()">
-        🚨 Emergency Message
-      </button>
+
     </section>
-    <br>
-    <!-- FAQ Section -->
-    <section class="card">
+
+
+    <!-- ================= FAQ ================= -->
+    <section id="faq" class="section">
+
       <h2>Frequently Asked Questions</h2>
-      <br>
-      <h3>How does QR Masked Call work?</h3>
-      <p>
-        Scan the QR code on the vehicle and choose the contact option.
-        The owner's personal phone number is not displayed.
-      </p>
-      <br>
-      <h3>Can I see the owner's phone number?</h3>
-      <p>
-        No. The system is designed to keep the owner's phone number private.
-      </p>
-      <br>
-      <h3>Do I need to install an app?</h3>
-      <p>
-        No. The website can be opened directly from your phone or tablet.
-      </p>
+
+      <details>
+        <summary>How does QR Masked Call work?</summary>
+        <p>
+          Scan the QR code attached to a vehicle. The QR code identifies
+          the vehicle and allows you to contact its owner through the
+          available contact options.
+        </p>
+      </details>
+
+      <details>
+        <summary>Can I call the owner without seeing their number?</summary>
+        <p>
+          Yes. The final masked-call system will use a secure calling API
+          so that the vehicle owner's personal phone number is not revealed.
+        </p>
+      </details>
+
+      <details>
+        <summary>Why does the website need camera permission?</summary>
+        <p>
+          Camera permission is required to scan the QR code directly
+          from your device.
+        </p>
+      </details>
+
+      <details>
+        <summary>Does the website save my phone number?</summary>
+        <p>
+          The QR scanner itself does not require your phone number.
+          Any future customer information will be handled separately
+          through the secure backend.
+        </p>
+      </details>
+
     </section>
-    <br>
-    <!-- Customer Support -->
-    <section class="card">
+
+
+    <!-- ================= CUSTOMER SUPPORT ================= -->
+    <section id="customer-support" class="section">
+
       <h2>Customer Support</h2>
-      <br>
+
       <p>
-        Need help? Contact our support team through WhatsApp.
+        Need help with QR Masked Call?
       </p>
-      <br>
-      <button type="button" onclick="contactSupport()">
-        Contact Support
-      </button>
+
+      <a
+        id="supportWhatsApp"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer">
+        Contact Customer Support on WhatsApp
+      </a>
+
     </section>
+
   </main>
+
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="currentYear"></span> QR Masked Call. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <!-- ================= QR SCANNER LOGIC ================= -->
   <script>
-    function startScanner() {
-      const scanner = document.getElementById("scanner");
-      scanner.innerHTML =
-        "<p>QR scanner will be connected here.</p>" +
-        "<p>Please allow camera access when the scanner is activated.</p>";
+    /*
+      QR MASKED CALL
+      ----------------
+      Current functionality:
+      1. Opens device camera.
+      2. Requests camera permission.
+      3. Scans QR codes.
+      4. Reads QR data.
+      5. Prepares Call / WhatsApp / Emergency actions.
+      6. Can later be connected to a backend/API for masked calling.
+
+      IMPORTANT:
+      Camera access normally requires HTTPS.
+      GitHub Pages provides HTTPS automatically.
+    */
+
+
+    // ================= ELEMENTS =================
+
+    const scanBtn = document.getElementById("scanBtn");
+    const stopScanBtn = document.getElementById("stopScanBtn");
+    const scanAgainBtn = document.getElementById("scanAgainBtn");
+
+    const scannerContainer =
+      document.getElementById("scannerContainer");
+
+    const camera =
+      document.getElementById("camera");
+
+    const canvas =
+      document.getElementById("qrCanvas");
+
+    const canvasContext =
+      canvas.getContext("2d", { willReadFrequently: true });
+
+    const scannerStatus =
+      document.getElementById("scannerStatus");
+
+    const scanMessage =
+      document.getElementById("scanMessage");
+
+    const qrResult =
+      document.getElementById("qrResult");
+
+    const qrData =
+      document.getElementById("qrData");
+
+    const callOwnerBtn =
+      document.getElementById("callOwnerBtn");
+
+    const whatsappOwnerBtn =
+      document.getElementById("whatsappOwnerBtn");
+
+    const emergencyBtn =
+      document.getElementById("emergencyBtn");
+
+
+    // ================= CONFIGURATION =================
+
+    /*
+      Keep these values empty until the backend/API is connected.
+
+      MASKED_CALL_API
+      ----------------
+      Future API endpoint for your masked calling provider.
+
+      SUPPORT_WHATSAPP
+      ----------------
+      Replace with your official customer-support WhatsApp number.
+
+      Example:
+      const SUPPORT_WHATSAPP = "919876543210";
+    */
+
+    const MASKED_CALL_API = "";
+
+    const SUPPORT_WHATSAPP = "";
+
+
+    // ================= STATE =================
+
+    let cameraStream = null;
+    let scanning = false;
+    let animationFrame = null;
+    let scannedQRData = null;
+
+
+    // ================= START SCANNER =================
+
+    scanBtn.addEventListener("click", startScanner);
+
+    async function startScanner() {
+
+      clearMessage();
+
+      qrResult.hidden = true;
+      scannerContainer.hidden = false;
+
+      scannedQRData = null;
+
+      scannerStatus.textContent =
+        "Requesting camera permission...";
+
+      try {
+
+        if (!navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia) {
+
+          throw new Error(
+            "Camera access is not supported by this browser."
+          );
+        }
+
+        /*
+          Prefer the rear camera on mobile devices.
+        */
+
+        cameraStream =
+          await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: {
+                ideal: "environment"
+              },
+              width: {
+                ideal: 1280
+              },
+              height: {
+                ideal: 720
+              }
+            },
+            audio: false
+          });
+
+        camera.srcObject = cameraStream;
+
+        await camera.play();
+
+        scanning = true;
+
+        scannerStatus.textContent =
+          "Point your camera at the vehicle QR code.";
+
+        scanFrame();
+
+      } catch (error) {
+
+        console.error("Camera error:", error);
+
+        scannerContainer.hidden = false;
+
+        if (error.name === "NotAllowedError") {
+
+          showMessage(
+            "Camera permission was denied. Please allow camera access in your browser settings and try again.",
+            "error"
+          );
+
+        } else if (error.name === "NotFoundError") {
+
+          showMessage(
+            "No camera was found on this device.",
+            "error"
+          );
+
+        } else if (error.name === "NotReadableError") {
+
+          showMessage(
+            "The camera is currently being used by another application.",
+            "error"
+          );
+
+        } else {
+
+          showMessage(
+            "Unable to access the camera. Please make sure this page is using HTTPS and camera permission is enabled.",
+            "error"
+          );
+        }
+
+        scannerStatus.textContent =
+          "Camera could not be started.";
+
+        stopScanner(false);
+      }
     }
-    function makeCall() {
-      alert("Masked calling system will be connected here.");
+
+
+    // ================= SCAN FRAME =================
+
+    function scanFrame() {
+
+      if (!scanning) {
+        return;
+      }
+
+      if (camera.readyState === camera.HAVE_ENOUGH_DATA) {
+
+        const width = camera.videoWidth;
+        const height = camera.videoHeight;
+
+        if (width > 0 && height > 0) {
+
+          canvas.width = width;
+          canvas.height = height;
+
+          canvasContext.drawImage(
+            camera,
+            0,
+            0,
+            width,
+            height
+          );
+
+          const imageData =
+            canvasContext.getImageData(
+              0,
+              0,
+              width,
+              height
+            );
+
+          /*
+            jsQR reads the QR code from the camera frame.
+          */
+
+          if (typeof jsQR === "function") {
+
+            const code =
+              jsQR(
+                imageData.data,
+                imageData.width,
+                imageData.height,
+                {
+                  inversionAttempts: "attemptBoth"
+                }
+              );
+
+            if (code && code.data) {
+
+              handleQRDetected(code.data);
+
+              return;
+            }
+          }
+        }
+      }
+
+      animationFrame =
+        requestAnimationFrame(scanFrame);
     }
-    function openWhatsApp() {
-      alert("WhatsApp integration will be connected here.");
+
+
+    // ================= QR DETECTED =================
+
+    function handleQRDetected(data) {
+
+      if (!scanning) {
+        return;
+      }
+
+      scannedQRData = data;
+
+      stopScanner(false);
+
+      scannerContainer.hidden = true;
+
+      qrResult.hidden = false;
+
+      displayQRResult(data);
+
     }
-    function sendEmergency() {
-      alert("Emergency message system will be connected here.");
+
+
+    // ================= DISPLAY RESULT =================
+
+    function displayQRResult(data) {
+
+      /*
+        Do NOT directly insert QR data as HTML.
+        textContent prevents malicious HTML from being executed.
+      */
+
+      qrData.textContent =
+        "QR Data: " + data;
+
+      showMessage(
+        "QR code scanned successfully.",
+        "success"
+      );
     }
-    function contactSupport() {
-      alert("Customer support WhatsApp will be connected here.");
+
+
+    // ================= STOP SCANNER =================
+
+    stopScanBtn.addEventListener(
+      "click",
+      function () {
+        stopScanner(true);
+      }
+    );
+
+
+    function stopScanner(showStatus = true) {
+
+      scanning = false;
+
+      if (animationFrame) {
+
+        cancelAnimationFrame(animationFrame);
+
+        animationFrame = null;
+      }
+
+      if (cameraStream) {
+
+        cameraStream
+          .getTracks()
+          .forEach(function (track) {
+            track.stop();
+          });
+
+        cameraStream = null;
+      }
+
+      camera.srcObject = null;
+
+      if (showStatus) {
+
+        scannerStatus.textContent =
+          "Scanner stopped.";
+
+        scannerContainer.hidden = true;
+      }
     }
+
+
+    // ================= SCAN AGAIN =================
+
+    scanAgainBtn.addEventListener(
+      "click",
+      function () {
+
+        qrResult.hidden = true;
+
+        clearMessage();
+
+        startScanner();
+      }
+    );
+
+
+    // ================= MASKED CALL =================
+
+    callOwnerBtn.addEventListener(
+      "click",
+      async function () {
+
+        if (!scannedQRData) {
+
+          showMessage(
+            "Please scan a vehicle QR code first.",
+            "error"
+          );
+
+          return;
+        }
+
+        /*
+          FUTURE BACKEND INTEGRATION
+
+          Example flow:
+
+          QR Code
+             ↓
+          Vehicle ID
+             ↓
+          Your backend
+             ↓
+          Masked-call API
+             ↓
+          Temporary/masked connection
+             ↓
+          Customer ↔ Vehicle Owner
+
+          The owner's real phone number should NEVER
+          be placed directly inside this public HTML/JS.
+        */
+
+        if (!MASKED_CALL_API) {
+
+          showMessage(
+            "QR scanned successfully. The masked calling API is ready to be connected.",
+            "info"
+          );
+
+          return;
+        }
+
+        try {
+
+          callOwnerBtn.disabled = true;
+
+          callOwnerBtn.textContent =
+            "Connecting...";
+
+          const response =
+            await fetch(MASKED_CALL_API, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                qrData: scannedQRData
+              })
+            });
+
+          if (!response.ok) {
+            throw new Error(
+              "Masked call request failed."
+            );
+          }
+
+          const result =
+            await response.json();
+
+          /*
+            Your backend can return a call URL,
+            session ID, or another provider-specific
+            response here.
+          */
+
+          if (result.callUrl) {
+
+            window.location.href =
+              result.callUrl;
+
+          } else {
+
+            showMessage(
+              "Call request was sent successfully.",
+              "success"
+            );
+          }
+
+        } catch (error) {
+
+          console.error(error);
+
+          showMessage(
+            "Unable to start the masked call. Please try again.",
+            "error"
+          );
+
+        } finally {
+
+          callOwnerBtn.disabled = false;
+
+          callOwnerBtn.textContent =
+            "Call Vehicle Owner";
+        }
+      }
+    );
+
+
+    // ================= WHATSAPP =================
+
+    whatsappOwnerBtn.addEventListener(
+      "click",
+      function () {
+
+        if (!scannedQRData) {
+
+          showMessage(
+            "Please scan a vehicle QR code first.",
+            "error"
+          );
+
+          return;
+        }
+
+        /*
+          The WhatsApp number should eventually be
+          returned securely by your backend.
+
+          Do NOT store private owner numbers
+          directly in this frontend.
+        */
+
+        showMessage(
+          "WhatsApp contact is ready for backend integration.",
+          "info"
+        );
+
+        /*
+          Future example:
+
+          const ownerWhatsApp =
+            backendResponse.whatsappNumber;
+
+          window.open(
+            "https://wa.me/" + ownerWhatsApp,
+            "_blank"
+          );
+        */
+      }
+    );
+
+
+    // ================= EMERGENCY =================
+
+    emergencyBtn.addEventListener(
+      "click",
+      function () {
+
+        if (!scannedQRData) {
+
+          showMessage(
+            "Please scan a vehicle QR code first.",
+            "error"
+          );
+
+          return;
+        }
+
+        /*
+          Future emergency flow:
+
+          Customer
+             ↓
+          Emergency button
+             ↓
+          Backend
+             ↓
+          Vehicle owner
+             ↓
+          SMS / WhatsApp / Push notification
+        */
+
+        const confirmed =
+          window.confirm(
+            "Do you want to send an emergency message to the vehicle owner?"
+          );
+
+        if (!confirmed) {
+          return;
+        }
+
+        showMessage(
+          "Emergency feature is ready for backend/API integration.",
+          "info"
+        );
+      }
+    );
+
+
+    // ================= SUPPORT WHATSAPP =================
+
+    const supportWhatsApp =
+      document.getElementById("supportWhatsApp");
+
+    if (SUPPORT_WHATSAPP) {
+
+      supportWhatsApp.href =
+        "https://wa.me/" + SUPPORT_WHATSAPP;
+
+    } else {
+
+      supportWhatsApp.addEventListener(
+        "click",
+        function (event) {
+
+          event.preventDefault();
+
+          showMessage(
+            "Customer support WhatsApp number will be connected here.",
+            "info"
+          );
+        }
+      );
+    }
+
+
+    // ================= MESSAGES =================
+
+    function showMessage(message, type) {
+
+      scanMessage.textContent = message;
+
+      scanMessage.className =
+        "scan-message " + type;
+    }
+
+
+    function clearMessage() {
+
+      scanMessage.textContent = "";
+
+      scanMessage.className =
+        "scan-message";
+    }
+
+
+    // ================= PAGE CLEANUP =================
+
+    window.addEventListener(
+      "beforeunload",
+      function () {
+        stopScanner(false);
+      }
+    );
+
+
+    document.addEventListener(
+      "visibilitychange",
+      function () {
+
+        if (document.hidden && scanning) {
+          stopScanner(false);
+        }
+      }
+    );
+
+
+    // ================= YEAR =================
+
+    document.getElementById(
+      "currentYear"
+    ).textContent =
+      new Date().getFullYear();
+
   </script>
+
 </body>
 </html>
